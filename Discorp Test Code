@@ -1,0 +1,39 @@
+import discord
+from discord.ext.commands import Bot
+
+bot = Bot("!",intents=discord.Intents.all())
+tree = bot.tree
+
+BOT_TOKEN = "PUT YOUR TOKEN HERE"
+
+@bot.event
+async def on_ready():
+	# Bot runs this function when online (on ready) 
+
+	print("Bot Online!")
+
+	await tree.sync() # Run this to update your commands
+
+	print("Commands Synced!")
+
+@tree.command(name = "hello", description = "Say Hello!")
+async def hello(interaction):
+	"""This command sends `Hello`"""
+
+	await interaction.response.send_message("Hello")
+
+@tree.command(name = "value", description = "Replies with your value")
+async def value(interaction,parameter:str):
+	"""This command takes a value (parameter) and replies with it"""
+
+	await interaction.response.send_message(parameter)
+
+@tree.command(name = "default", description = "Replies with your value")
+async def default(interaction,parameter:str="This is the default message"):
+	"""This command replies with the parameter if given else will reply with a default message"""
+
+	await interaction.response.send_message(parameter)
+
+# This actually runs our Bot
+if __name__ == '__main__':
+	bot.run(BOT_TOKEN)
