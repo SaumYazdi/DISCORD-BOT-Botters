@@ -1,0 +1,89 @@
+import openai
+import discord
+from discord.ext import commands
+from googlesearch import search
+import wolframalpha
+
+bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
+
+# Set up OpenAI API
+openai.api_key = "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"
+
+# Set up WolframAlpha API
+wolframalpha_app_id = "HR2456-33GGLV9QE9"
+wa_client = wolframalpha.Client(wolframalpha_app_id)
+
+@bot.event
+async def on_ready():
+    print(f'{bot.user.name} is ready.')
+
+@bot.command()
+async def hello(ctx):
+    await ctx.send('Hi, how can I help you?')
+
+@bot.command()
+async def howareyou(ctx):
+    await ctx.send("I'm a bot, I don't have feelings, but thank you for asking.")
+
+@bot.command()
+async def goodbye(ctx):
+    await ctx.send('Goodbye! See you soon.')
+
+@bot.command()
+async def whatislife(ctx):
+    await ctx.send("I'm just a bot, I don't know the answer to that question.")
+
+@bot.command()
+async def hiwhatsyourname(ctx):
+    await ctx.send('Hello, my name is Botters. How can I assist you today?')
+
+@bot.command()
+async def changenick(ctx, member: discord.Member, new_name: str):
+    """Change a member's nickname."""
+    await member.edit(nick=new_name)
+    await ctx.send(f"{member}'s nickname has been changed to {new_name}.")
+
+@bot.command()
+async def ask(ctx, *, question: str):
+    try:
+        # Check if the question is a math question
+        if "solve" in question.lower() or "calculate" in question.lower() or "what is the answer to" in question.lower():
+            # Use WolframAlpha to solve the math problem
+            res = wa_client.query(question)
+            answer = next(res.results).text
+            await ctx.send(answer)
+        else:
+            # Search Google for the question
+            results = list(search(question, num_results=5))
+
+            # Check if there were any search results
+            if not results:
+                await ctx.send("I'm sorry, I couldn't find any results for your question.")
+                return
+            
+            # Use OpenAI to summarize the first search result
+            summary = openai.Completion.create(
+                engine="davinci",
+                prompt=f"Please summarize this article: {results[0]}",
+                temperature=0.5,
+                max_tokens=50,
+                n=1,
+                stop=None,
+                frequency_penalty=0,
+                presence_penalty=0
+            )
+
+            # Check if OpenAI returned a valid summary
+            if not summary.choices:
+                await ctx.send("I'm sorry, I couldn't find an answer to your question.")
+                return
+            
+            # Send the summary as the answer
+            await ctx.send(summary.choices[0].text)
+
+    except Exception as e:
+        print(e)
+        await ctx.send("I'm sorry, something went wrong. Please try again later.")
+
+# This actually runs our Bot
+bot.run("MTA4NzQ4ODg0OTMxMzI3MTgyOA.GPz2LD.DZlg-BcTkHHU2AodHjYhP6HjKD66PJxpJCpuSU")
