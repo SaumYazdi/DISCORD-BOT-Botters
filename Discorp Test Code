@@ -4,7 +4,7 @@ from discord.ext.commands import Bot
 bot = Bot("!",intents=discord.Intents.all())
 tree = bot.tree
 
-BOT_TOKEN = "PUT YOUR TOKEN HERE"
+BOT_TOKEN = "ENTER BOT TOKEN"
 
 @bot.event
 async def on_ready():
@@ -16,11 +16,28 @@ async def on_ready():
 
 	print("Commands Synced!")
 
-@tree.command(name = "hello", description = "Say Hello!")
-async def hello(interaction):
-	"""This command sends `Hello`"""
+	
+@bot.command()
+async def hello(ctx):
+    await ctx.send('Hi, how can I help you?')
 
-	await interaction.response.send_message("Hello")
+@bot.command()
+async def howareyou(ctx):
+    await ctx.send("I'm a bot, I don't have feelings, but thank you for asking.")
+
+@bot.command()
+async def goodbye(ctx):
+    await ctx.send('Goodbye! See you soon.')
+
+
+@bot.command()
+async def whatislife(ctx):
+    await ctx.send('I really wouldnt know')
+
+
+@bot.command()
+async def hiwhatsyourname(ctx):
+    await ctx.send('Hello, my name is Botters. I am a basic Bot that will make your life harder, rather than easier')
 
 @tree.command(name = "value", description = "Replies with your value")
 async def value(interaction,parameter:str):
@@ -36,4 +53,6 @@ async def default(interaction,parameter:str="This is the default message"):
 
 # This actually runs our Bot
 if __name__ == '__main__':
-	bot.run(BOT_TOKEN)
+	bot.run("ENTER BOT TOKEN")
+
+
