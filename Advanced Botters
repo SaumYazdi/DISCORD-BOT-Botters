@@ -7,10 +7,10 @@ import wolframalpha
 bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 
 # Set up OpenAI API
-openai.api_key = "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"
+openai.api_key = "INSERT API KEY"
 
 # Set up WolframAlpha API
-wolframalpha_app_id = "HR2456-33GGLV9QE9"
+wolframalpha_app_id = "INSERT WOLFRAMALPHA APP ID"
 wa_client = wolframalpha.Client(wolframalpha_app_id)
 
 @bot.event
@@ -86,4 +86,4 @@ async def ask(ctx, *, question: str):
         await ctx.send("I'm sorry, something went wrong. Please try again later.")
 
 # This actually runs our Bot
-bot.run("MTA4NzQ4ODg0OTMxMzI3MTgyOA.GPz2LD.DZlg-BcTkHHU2AodHjYhP6HjKD66PJxpJCpuSU")
+bot.run("ENTER BOT TOKEN")
